@@ -61,6 +61,26 @@ const httpRequestListner = function (request, response) {
         response.writeHead(200, { "Content-Type": "application/json" });
         response.end(JSON.stringify({ users: users }));
       });
+    } else if (url === "/posts") {
+      let body = "";
+
+      request.on("data", (data) => {
+        body += data;
+      });
+
+      request.on("end", () => {
+        const post = JSON.parse(body);
+
+        posts.push({
+          id: post.id,
+          title: post.title,
+          content: post.content,
+          userId: post.userId,
+        });
+        // response.end("ok");
+        response.writeHead(200, { "Content-Type": "application/json" });
+        response.end(JSON.stringify({ posts: posts }));
+      });
     }
   }
 };
