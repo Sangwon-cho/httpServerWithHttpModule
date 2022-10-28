@@ -31,6 +31,20 @@ const posts = [
     userId: 1,
   },
 ];
+const data = [];
+users.forEach((usersElement) => {
+  posts.forEach((postElement) => {
+    if (postElement.id === usersElement.id) {
+      data.push({
+        userId: usersElement.id,
+        userName: usersElement.name,
+        postingId: postElement.id,
+        postingTitle: postElement.title,
+        postingContent: postElement.content,
+      });
+    }
+  });
+});
 
 const httpRequestListner = function (request, response) {
   const { url, method } = request;
@@ -39,6 +53,10 @@ const httpRequestListner = function (request, response) {
     if (url === "/ping") {
       response.writeHead(200, { "Content-Type": "application/json" });
       response.end(JSON.stringify({ message: "pong" }));
+    } else if (url === "/post") {
+      response.writeHead(200, { "Content-Type": "application/json" });
+
+      response.end(JSON.stringify({ data: data }));
     }
   } else if (method === "POST") {
     if (url === "/users/signup") {
